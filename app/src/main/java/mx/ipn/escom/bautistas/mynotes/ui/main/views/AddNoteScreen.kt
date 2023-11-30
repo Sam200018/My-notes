@@ -1,5 +1,9 @@
 package mx.ipn.escom.bautistas.mynotes.ui.main.views
 
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,14 +25,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import mx.ipn.escom.bautistas.mynotes.ui.main.viewmodels.NoteViewModel
 import mx.ipn.escom.bautistas.mynotes.ui.theme.MyNotesTheme
 
@@ -36,6 +40,21 @@ import mx.ipn.escom.bautistas.mynotes.ui.theme.MyNotesTheme
 fun AddNoteScreen(noteViewModel: NoteViewModel, backHome: () -> Unit) {
 
     val state by noteViewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    val mediaPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+            if (uri != null) {
+                val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                context.contentResolver.takePersistableUriPermission(uri, flag)
+                noteViewModel.onImageChanged(uri)
+            }
+
+        }
+    )
+
+
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.surface) {
 
         Column(
@@ -55,6 +74,31 @@ fun AddNoteScreen(noteViewModel: NoteViewModel, backHome: () -> Unit) {
                 label = { Text(text = "body") },
                 onValueChange = { noteViewModel.onBodyChanged(it) })
             Spacer(modifier = Modifier.height(20.dp))
+            if (state.note.image != null)
+                Row(
+                    modifier = Modifier
+                        .height(300.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+
+                ) {
+                    AsyncImage(
+                        model = state.note.image,
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Button(onClick = {
+                    mediaPickerLauncher.launch(
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    )
+                }) {
+                    Text(text = "Select Image")
+                }
+            }
+
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
 
                 if (state.note.id == 0) {
