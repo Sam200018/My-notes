@@ -2,7 +2,9 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-    id ("com.google.dagger.hilt.android")
+    id("com.google.dagger.hilt.android")
+//  Firebase
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -70,20 +72,30 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-//  Room
+//      Room
     val roomVersion = "2.6.0"
-    implementation ("androidx.room:room-runtime:$roomVersion")
-    kapt ("androidx.room:room-compiler:$roomVersion")
-//  Dagger hilt
-    implementation ("com.google.dagger:hilt-android:2.48.1")
-    kapt ("com.google.dagger:hilt-compiler:2.48.1")
-//  Navigation
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+//      Dagger hilt
+    implementation("com.google.dagger:hilt-android:2.48.1")
+    kapt("com.google.dagger:hilt-compiler:2.48.1")
+//      Navigation
     val navVersion = "2.7.5"
-    implementation ("androidx.navigation:navigation-compose:$navVersion")
-//    lifecycle
-    implementation ("androidx.lifecycle:lifecycle-runtime-compose:2.6.2 ")
-//    Hilt Navigation
-    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("androidx.navigation:navigation-compose:$navVersion")
+//      lifecycle
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2 ")
+//      Hilt Navigation
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+//      Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.firebase:firebase-common-ktx:20.4.2")
+//    Firebase google auth
+    implementation("com.google.firebase:firebase-auth")
+//    Extended icons
+    implementation("androidx.compose.material:material-icons-extended-android:1.5.4")
+    //    Coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
 }
 
 kapt {
