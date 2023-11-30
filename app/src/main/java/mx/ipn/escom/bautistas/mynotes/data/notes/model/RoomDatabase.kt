@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import mx.ipn.escom.bautistas.mynotes.data.notes.local.NoteEntity
 import mx.ipn.escom.bautistas.mynotes.data.notes.local.NotesDao
 
-@Database(entities = [NoteEntity::class], version = 2)
+@Database(entities = [NoteEntity::class], version = 3)
 abstract class NoteDatabase : RoomDatabase() {
     abstract fun notesDao(): NotesDao
 }
