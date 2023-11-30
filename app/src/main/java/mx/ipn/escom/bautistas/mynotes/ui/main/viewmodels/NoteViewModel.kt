@@ -1,5 +1,6 @@
 package mx.ipn.escom.bautistas.mynotes.ui.main.viewmodels
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -56,32 +57,34 @@ class NoteViewModel
         }
     }
 
-    fun toNewNote(){
+    fun toNewNote() {
         title = ""
         body = ""
-        _state.value.note = Note()
+        _state.update {
+            it.copy(note = Note())
+        }
     }
 
     fun insertNote(backStack: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            val note = Note(id = 0, title = title, body = body)
+            val note = Note(id = 0, title = title, body = body, image = state.value.note.image)
             insertNote(note)
             collectNotes()
         }
         backStack()
     }
 
-    fun updateNote(backStack: () -> Unit){
+    fun updateNote(backStack: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            var updatedNote = state.value.note.copy(title = title, body = body)
+            val updatedNote = state.value.note.copy(title = title, body = body)
             updateNote(updatedNote)
             collectNotes()
         }
         backStack()
     }
 
-    fun deleteNote(backStack: () -> Unit){
-        viewModelScope.launch(Dispatchers.IO){
+    fun deleteNote(backStack: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
             deleteNote(state.value.note)
             collectNotes()
         }
@@ -94,6 +97,14 @@ class NoteViewModel
 
     fun onBodyChanged(body: String) {
         this.body = body
+    }
+
+    fun onImageChanged(uri: Uri?) {
+        _state.update {
+            it.copy(
+                note= it.note.copy(image= uri)
+            )
+        }
     }
 
     fun onSelectedNote(note: Note) {
