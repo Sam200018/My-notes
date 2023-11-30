@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "733697731040",
+    "project_id": "mynotes-sbb25",
+    "storage_bucket": "mynotes-sbb25.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:733697731040:android:bd9c07e1b8bacb269b2385",
+        "android_client_info": {
+          "package_name": "mx.ipn.escom.bautistas.mynotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTG_IXsIeP6h5NevgwVPhz1l-vHB9FY04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
